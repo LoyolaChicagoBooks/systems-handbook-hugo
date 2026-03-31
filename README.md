@@ -1,122 +1,150 @@
-# Docsy Example
+# Loyola CS Systems Handbook
 
-[Docsy][] is a [Hugo theme][] for technical documentation sites, providing easy
-site navigation, structure, and more. This **Docsy Example Project** uses the
-Docsy theme and provides a skeleton documentation structure for you to use. You
-can clone/copy this project and edit it with your own content, or use it as an
-example.
+The Loyola University Chicago CS Systems Handbook is a Sphinx-based
+documentation project that captures operational knowledge about department
+systems, services, labs, and support workflows for students, faculty, and
+staff.
 
-In this project, the Docsy theme is included as a Git submodule:
+Published site: <https://systemshandbook.cs.luc.edu/>
 
-```bash
-$ git submodule
-...<hash>... themes/docsy (remotes/origin/HEAD)
-```
+## What This Project Contains
 
-You can find detailed theme instructions in the [Docsy user guide][].
+This repository is the source for the handbook website, including:
 
-This Docsy Example Project is hosted on [Netlify][] at [example.docsy.dev][].
-You can view deploy logs from the [deploy section of the project's Netlify
-dashboard][deploys], or this [alternate dashboard][].
+- Department service documentation (`src/department_services/`)
+- ITS-related service guides (`src/its_services/`)
+- Cluster/system documentation (`src/dijkstra/`, `src/prim/`)
+- End-user how-to references (`src/how_to/`)
 
-This is not an officially supported Google product. This project is currently maintained.
+The docs entrypoint is `src/index.rst`, and Sphinx configuration lives in
+`src/conf.py`.
 
-## Using the Docsy Example Project as a template
+## Project Stack
 
-A simple way to get started is to use this project as a template, which gives you a site project that is set up and ready to use. To do this: 
+- Python 3.13+
+- Sphinx
+- Read the Docs theme (`sphinx-rtd-theme`)
+- `uv` for environment/dependency management
+- `pre-commit` for formatting, linting, and validation hooks
 
-1. Click **Use this template**.
+## Quick Start
 
-2. Select a name for your new project and click **Create repository from template**.
+### 1) Prerequisites
 
-3. Make your own local working copy of your new repo using git clone, replacing https://github.com/my/example.git with your repo’s web URL:
+- Python 3.13
+- `uv`
+- `make`
 
-```bash
-git clone --recurse-submodules --depth 1 https://github.com/my/example.git
-```
-
-You can now edit your own versions of the site’s source files.
-
-If you want to do SCSS edits and want to publish these, you need to install `PostCSS`
+### 2) Bootstrap a Development Environment
 
 ```bash
-npm install
+make create-dev
 ```
 
-## Running the website locally
+This command installs/updates pre-commit hooks, syncs dependencies via `uv`,
+and runs a package build.
 
-Building and running the site locally requires a recent `extended` version of [Hugo](https://gohugo.io).
-You can find out more about how to install Hugo for your environment in our
-[Getting started](https://www.docsy.dev/docs/getting-started/#prerequisites-and-installation) guide.
+### 3) Build the Documentation Locally
 
-Once you've made your working copy of the site repo, from the repo root folder, run:
-
-```
-hugo server
+```bash
+make build-html
 ```
 
-## Running a container locally
+Generated HTML is written to `html/`.
 
-You can run docsy-example inside a [Docker](https://docs.docker.com/)
-container, the container runs with a volume bound to the `docsy-example`
-folder. This approach doesn't require you to install any dependencies other
-than [Docker Desktop](https://www.docker.com/products/docker-desktop) on
-Windows and Mac, and [Docker Compose](https://docs.docker.com/compose/install/)
-on Linux.
+## Build and Release Process
 
-1. Build the docker image 
+The canonical build target is in `Makefile`:
 
-   ```bash
-   docker-compose build
-   ```
-
-1. Run the built image
-
-   ```bash
-   docker-compose up
-   ```
-
-   > NOTE: You can run both commands at once with `docker-compose up --build`.
-
-1. Verify that the service is working. 
-
-   Open your web browser and type `http://localhost:1313` in your navigation bar,
-   This opens a local instance of the docsy-example homepage. You can now make
-   changes to the docsy example and those changes will immediately show up in your
-   browser after you save.
-
-### Cleanup
-
-To stop Docker Compose, on your terminal window, press **Ctrl + C**. 
-
-To remove the produced images run:
-
-```console
-docker-compose rm
-```
-For more information see the [Docker Compose
-documentation](https://docs.docker.com/compose/gettingstarted/).
-
-## Troubleshooting
-
-As you run the website locally, you may run into the following error:
-
-```
-➜ hugo server
-
-INFO 2021/01/21 21:07:55 Using config file: 
-Building sites … INFO 2021/01/21 21:07:55 syncing static files to /
-Built in 288 ms
-Error: Error building site: TOCSS: failed to transform "scss/main.scss" (text/x-scss): resource "scss/scss/main.scss_9fadf33d895a46083cdd64396b57ef68" not found in file cache
+```bash
+make build-html
 ```
 
-This error occurs if you have not installed the extended version of Hugo.
-See our [user guide](https://www.docsy.dev/docs/getting-started/) for instructions on how to install Hugo.
+Equivalent direct command:
 
-[alternate dashboard]: https://app.netlify.com/sites/goldydocs/deploys
-[deploys]: https://app.netlify.com/sites/docsy-example/deploys
-[Docsy user guide]: https://docsy.dev/docs
-[Docsy]: https://github.com/google/docsy
-[example.docsy.dev]: https://example.docsy.dev
-[Hugo theme]: https://gohugo.io/themes/installing-and-using-themes/
-[Netlify]: https://netlify.com
+```bash
+sphinx-build --write-all src html
+```
+
+Release deployment uses:
+
+```bash
+make deploy-gh
+```
+
+The GitHub Actions workflow at `.github/workflows/build.yml` runs on tag pushes
+and manual dispatch, then executes:
+
+1. `make create-dev`
+2. `make build-html`
+3. `make deploy-gh`
+
+## Quality Checks
+
+Run all configured checks:
+
+```bash
+pre-commit run --all-files
+```
+
+Common individual hooks:
+
+```bash
+pre-commit run black --all-files
+pre-commit run isort --all-files
+pre-commit run flake8 --all-files
+pre-commit run bandit --all-files
+pre-commit run rstfmt --all-files
+```
+
+Recommended validation before submitting changes:
+
+```bash
+pre-commit run --all-files
+make build-html
+```
+
+## Testing Notes
+
+There is currently no dedicated test suite (no `pytest`/`tox`/`nox`
+configuration). In practice, this project uses lint + docs build as its
+validation pipeline.
+
+Closest equivalent to a single-test run:
+
+```bash
+pre-commit run rstfmt --files src/how_to/command_line_basics.rst
+```
+
+## How to Continue Development
+
+### Content updates
+
+1. Add or edit `.rst` files under `src/`.
+2. Update relevant toctrees (usually in `src/index.rst` or section indexes).
+3. Build locally with `make build-html`.
+4. Run `pre-commit run --all-files`.
+
+### Structural updates
+
+- Keep section organization aligned with existing categories:
+  `department_services`, `its_services`, `how_to`, `dijkstra`, and `prim`.
+- Ensure links and toctree entries remain relative and valid.
+- Keep headings and `.rst` formatting consistent with surrounding content.
+
+### Dependency/tooling updates
+
+- Modify `pyproject.toml` as needed.
+- Refresh lock state with `uv` workflows.
+- Re-run `make create-dev` after significant tooling changes.
+
+## Repository Conventions
+
+- Python formatting: Black
+- Import sorting: isort (Black profile)
+- Linting: flake8
+- Security scanning: bandit
+- `.rst` formatting: rstfmt
+- Encoding/line endings: UTF-8 with LF
+
+See `AGENTS.md` for detailed instructions intended for autonomous coding agents.
