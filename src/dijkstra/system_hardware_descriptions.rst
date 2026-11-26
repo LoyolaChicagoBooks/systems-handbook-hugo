@@ -5,11 +5,11 @@
 .. note::
 
    The hardware and software system descriptions of Dijkstra are
-   evolving. This list is accurate as of Feburary 26, 2025.
+   evolving. This list is accurate as of February 26, 2025.
 
 Dijkstra is the Loyola University Chicago (LUC) Computer Science
 departments primary education and research cluster computer. It is
-inately a *heterogenous* system with a mixture of systems from various
+innately a *heterogenous* system with a mixture of systems from various
 vendors.
 
 Dijkstra is designed to provide both students and faculty a world class
@@ -47,7 +47,7 @@ subsections.
 Login Node Hardware
 ===================
 
-This datasheet describes the hardware availible on the *login* node.
+This datasheet describes the hardware available on the *login* node.
 While this machine is capable of executing software, it is primarily
 intended as the point of access to the CPU and GPU nodes. The hostname
 of this device is ``login``.
@@ -63,7 +63,7 @@ https://www.supermicro.com/products/system/2U/6029/SYS-6029P-TRT.cfm
 CPU Compute Node Hardware
 =========================
 
-This datasheet describes the hardware availible on the *CPU* compute
+This datasheet describes the hardware available on the *CPU* compute
 nodes. The hostnames of CPU compute nodes are denoted as ``node*`` where
 ``*`` is a value two (2) through fifteen (15) inclusive.
 
@@ -81,7 +81,7 @@ https://www.supermicro.com/en/products/system/2u/6029/sys-6029tp-htr.cfm
 GPU Compute Node Hardware
 =========================
 
-This datasheet describes the hardware availible on the *GPU* compute
+This datasheet describes the hardware available on the *GPU* compute
 nodes. The hostnames of GPU compute nodes are denoted as ``gpu*`` where
 ``*`` is a value one (1) through two (2) inclusive.
 

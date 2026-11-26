@@ -2,7 +2,7 @@
  Facilities
 ############
 
-Guide to department facilities, inluding labs and servers.
+Guide to department facilities, including labs and servers.
 
 ************************
  General Computing Labs

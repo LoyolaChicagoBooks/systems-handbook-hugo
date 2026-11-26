@@ -32,5 +32,5 @@ addresses for individual services. Use the same address for:
 *****************
 
 Please join the Loyola CS Systems group on Loyola’s Microsoft Teams
-effective after Janaury 1, 2022. This is available to Loyola faculty,
+effective after January 1, 2022. This is available to Loyola faculty,
 staff, and students only.

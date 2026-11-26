@@ -5,7 +5,7 @@
 Guide to user accounts available for CS faculty, staff, students.
 
 All students and faculty are given accounts in the CS department. Your
-account is intended for your use only. Please change your intial
+account is intended for your use only. Please change your initial
 password immediately on first use to improve security. (We are able to
 determine when a password has not been changed from the default and will
 lock accounts after a certain period.)

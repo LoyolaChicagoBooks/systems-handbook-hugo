@@ -57,7 +57,7 @@ http://bit.ly/vmap-loyola-chicago-cs.
 *************************
 
 The Computer Science Department is a member of the Apple Developer
-Progarm.
+Program.
 
 Information can be found at
 https://developer.apple.com/programs/ios/university/gettingstarted/.
